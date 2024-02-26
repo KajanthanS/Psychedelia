@@ -1,0 +1,36 @@
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body
+{
+    overflow: hidden;
+}
+
+.webgl
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+}
+
+#controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000; /* Ensure controls are on top */
+  }
+  
+  #zoomIn,
+  #zoomOut {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  #bgColorPicker {
+    display: block;
+  }
