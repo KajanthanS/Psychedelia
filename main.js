@@ -27,7 +27,6 @@ let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
 
-
 // Variable globale pour le modèle 3D
 let object;
 
@@ -52,7 +51,6 @@ loader.load(
     // Calcule le bounding box de l'objet 3D
     const box = new THREE.Box3().setFromObject(object);
     const center = box.getCenter(new THREE.Vector3());
-    
 
     // Calcule la distance afin de bouger la caméra
     const size = box.getSize(new THREE.Vector3());
@@ -119,6 +117,21 @@ function animate() {
   renderer.render(scene, camera);
 }
 
+// Function to show the pop-up
+function montrerPopup() {
+  document.getElementById('controlesPopup').style.display = 'block';
+}
+
+// Function to close the pop-up
+function fermerPopup() {
+  document.getElementById('controlesPopup').style.display = 'none';
+}
+
+// Add event listener to the button to show the pop-up
+document.getElementById('montrerControles').addEventListener('click', montrerPopup);
+document.getElementById('fermer').addEventListener('click', fermerPopup);
+
+
 // Function to handle zoom slider change
 document.getElementById("zoomSlider").addEventListener("input", function() {
   const value = parseFloat(this.value);
@@ -169,6 +182,7 @@ window.addEventListener("resize", function () {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
+
 
 // Ajout du position listener pour la souris afin qu'on puisse faire bouger l'objet dans la scène
 document.onmousemove = (e) => {
