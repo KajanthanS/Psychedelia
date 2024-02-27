@@ -99,40 +99,41 @@ const ambientLight = new THREE.AmbientLight(0x333333, objToRender === "Psychedel
 scene.background = new THREE.Color(0xD397F8);
 scene.add(ambientLight);
 
-//This adds controls to the camera, so we can rotate / zoom it with the mouse
+// Ajout du control du mouvement en orbit de la caméra
 if (objToRender === "Psychedelia") {
   controls = new OrbitControls(camera, renderer.domElement);
 }
 
-//Render the scene
+// Rendu de la scène
 function animate() {
   requestAnimationFrame(animate);
 
   // animateFireworks(); // Call the fireworks animation function
-  // Rotate the object
+
+  // Rotation de l'objet
   if (object) {
-    object.rotation.y += 0.01; // Adjust the rotation speed as needed
+    object.rotation.y += 0.005; 
   }
 
   renderer.render(scene, camera);
 }
 
-// Function to show the pop-up
+// Fonction pour montrer la fenêtre de contrôles 
 function montrerPopup() {
   document.getElementById('controlesPopup').style.display = 'block';
 }
 
-// Function to close the pop-up
+// Fonction pour fermer la fenêtre de contrôles
 function fermerPopup() {
   document.getElementById('controlesPopup').style.display = 'none';
 }
 
-// Add event listener to the button to show the pop-up
+// Ajout de l'event listener au bouton pour afficher la fenêtre de contôles
 document.getElementById('montrerControles').addEventListener('click', montrerPopup);
 document.getElementById('fermer').addEventListener('click', fermerPopup);
 
 
-// Function to handle zoom slider change
+// Fonction pour gérer le slider pour zoomer
 document.getElementById("zoomSlider").addEventListener("input", function() {
   const value = parseFloat(this.value);
   const minZoom = 1; // Adjust as needed
@@ -140,7 +141,7 @@ document.getElementById("zoomSlider").addEventListener("input", function() {
   const range = maxZoom - minZoom;
   const zoom = minZoom + (value / 100) * range;
 
-  // Update camera position based on zoom
+  // Mise à jour de la position de la caméra selon le zoom
   camera.position.z = zoom;
 });
 
@@ -151,6 +152,7 @@ document.getElementById("brightnessSlider").addEventListener("input", function()
 });
 
 function ajusterLuminosite(luminos) {
+
   // Ajuster la luminosité de la scène en ajustant les lumières présentes dans la scène
   topLight.intensity = luminos; 
   ambientLight.intensity = luminos; 
@@ -162,18 +164,20 @@ document.getElementById("bgColorPicker").addEventListener("input", function(even
   scene.background = new THREE.Color(color);
 });
 
-// Function to handle rotation based on slider value
+// Fonction permettant de gérer la rotation selon la valeur du slider
 function handleRotation() {
-  const sliderValue = parseFloat(document.getElementById('rotationSlider').value);
+  const valeurSlider = parseFloat(document.getElementById('rotationSlider').value);
   if (object) {
-      // Convert slider value to radians (assuming Three.js uses radians for rotation)
-      const radians = THREE.MathUtils.degToRad(sliderValue);
-      // Apply rotation to the model
+
+      // Conversion de la valeur du slider en radians
+      const radians = THREE.MathUtils.degToRad(valeurSlider);
+
+      // Applique la rotation au modèle
       object.rotation.y = radians;
   }
 }
 
-// Add event listener to the slider
+// Ajout de l'event listener au slider
 document.getElementById('rotationSlider').addEventListener('input', handleRotation)
 
 // Ajout d'un listener à la fenêtre, afin qu'on puisse changer la taille et ainsi de suite
@@ -190,7 +194,7 @@ document.onmousemove = (e) => {
   mouseY = e.clientY;
 }
 
-// // Function to create fireworks particle system
+// Fonction pour créer les particules
 // function createFireworks(scene) {
 //   const fireworksGeometry = new THREE.BufferGeometry();
 //   const fireworksVertices = [];
