@@ -1,20 +1,27 @@
-//Importation de la librairie Three.js
+// ********************************** IMPORTATION LIBRAIRIE THREE.JS ********************************
+
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
 
 // Permet la camera de bouger à travers la scène
-import { OrbitControls } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
+import {
+  OrbitControls
+} from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/controls/OrbitControls.js";
 
 // Permet d'importer le fichier .gltf
-import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+import {
+  GLTFLoader
+} from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
 
 //Création d'une scène Three.js
 const scene = new THREE.Scene();
 
-// Variables pour la taille de la fenêtre
+
+
+// ********************************** VARIABLES ********************************
 const sizes = {
   width: window.innerWidth,
   height: window.innerHeight
-  
+
 }
 
 //Création d'une nouvelle caméra et définition de la position
@@ -46,11 +53,13 @@ let objToRender = 'Psychedelia';
 const loader = new GLTFLoader();
 
 
-// Chargement du fichier
+
+// ********************************** CHARGEMENT FICHIER + CAMÉRA ********************************
+
 loader.load(
   `public/${objToRender}/scene.gltf`,
   function (gltf) {
-    
+
 
     // Lorsque l'objet est chargé, il sera ajouté à la scène
     object = gltf.scene;
@@ -71,7 +80,7 @@ loader.load(
     const fov = camera.fov * (Math.PI / 180);
     const cameraDistance = Math.abs(maxDim / Math.sin(fov / 2));
 
-    // Posiiton de la caméra
+    // Position de la caméra
     camera.position.copy(center);
     camera.position.z += cameraDistance;
 
@@ -92,16 +101,21 @@ loader.load(
 );
 
 
+
+// ********************************** CONFIGURATION DE LA FENÊTRE ********************************
+
 // Création de la fenêtre de rendu
-const renderer = new THREE.WebGLRenderer({ antialias: true }); //Alpha: true allows for the transparent background
+const renderer = new THREE.WebGLRenderer({
+  antialias: true
+}); //Alpha: true allows for the transparent background
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Ajout de la fenêtre de rendu au DOM
 document.getElementById("container3D").appendChild(renderer.domElement);
 
 // Ajout des lumières afin qu'on puisse voir l'objet
-const topLight = new THREE.DirectionalLight(0xffffff, 1); 
-topLight.position.set(500, 500, 500) 
+const topLight = new THREE.DirectionalLight(0xffffff, 1);
+topLight.position.set(500, 500, 500)
 topLight.castShadow = true;
 scene.add(topLight);
 
@@ -109,10 +123,14 @@ const ambientLight = new THREE.AmbientLight(0x333333, objToRender === "Psychedel
 scene.background = new THREE.Color(0xD397F8);
 scene.add(ambientLight);
 
-// Ajout du control du mouvement en orbit de la caméra
+// Ajout du controle de mouvement en orbit de la caméra
 if (objToRender === "Psychedelia") {
   controls = new OrbitControls(camera, renderer.domElement);
 }
+
+
+
+// ********************************** RENDU + ANIMATION ********************************
 
 // Rendu de la scène
 function animate() {
@@ -123,11 +141,15 @@ function animate() {
 
   // Rotation de l'objet
   if (object) {
-    object.rotation.y += 0.005; 
+    object.rotation.y += 0.005;
   }
 
   renderer.render(scene, camera);
 }
+
+
+
+// ********************************** CONTRÔLES ********************************
 
 // Fonction pour montrer la fenêtre de contrôles 
 function montrerPopup() {
@@ -145,7 +167,7 @@ document.getElementById('fermer').addEventListener('click', fermerPopup);
 
 
 // Fonction pour gérer le slider pour zoomer
-document.getElementById("zoomSlider").addEventListener("input", function() {
+document.getElementById("zoomSlider").addEventListener("input", function () {
   const value = parseFloat(this.value);
   const minZoom = 1; // Adjust as needed
   const maxZoom = 100; // Adjust as needed
@@ -157,7 +179,7 @@ document.getElementById("zoomSlider").addEventListener("input", function() {
 });
 
 // Fonction pour gérer la luminosité de la scène
-document.getElementById("brightnessSlider").addEventListener("input", function() {
+document.getElementById("brightnessSlider").addEventListener("input", function () {
   const luminos = parseFloat(this.value);
   ajusterLuminosite(luminos);
 });
@@ -165,12 +187,12 @@ document.getElementById("brightnessSlider").addEventListener("input", function()
 function ajusterLuminosite(luminos) {
 
   // Ajuster la luminosité de la scène en ajustant les lumières présentes dans la scène
-  topLight.intensity = luminos; 
-  ambientLight.intensity = luminos; 
+  topLight.intensity = luminos;
+  ambientLight.intensity = luminos;
 }
 
 // Fonction permettant de changer la couleur d'arrière-plan
-document.getElementById("bgColorPicker").addEventListener("input", function(event) {
+document.getElementById("bgColorPicker").addEventListener("input", function (event) {
   const color = event.target.value;
   scene.background = new THREE.Color(color);
 });
@@ -180,60 +202,60 @@ function handleRotation() {
   const valeurSlider = parseFloat(document.getElementById('rotationSlider').value);
   if (object) {
 
-      // Conversion de la valeur du slider en radians
-      const radians = THREE.MathUtils.degToRad(valeurSlider);
+    // Conversion de la valeur du slider en radians
+    const radians = THREE.MathUtils.degToRad(valeurSlider);
 
-      // Applique la rotation au modèle
-      object.rotation.y = radians;
+    // Applique la rotation au modèle
+    object.rotation.y = radians;
   }
 }
 
-// Ajout de l'event listener au slider
+// Ajout d'un event listener au slider
 document.getElementById('rotationSlider').addEventListener('input', handleRotation)
 
 const backgroundMusic = document.getElementById('backgroundMusic');
 const toggleMusicButton = document.getElementById('toggleMusic');
 const stopMusicButton = document.getElementById('stopMusic');
 
-let isMusicPlaying = true; // Initially, music is playing
+let isMusicPlaying = true; // La musique joue au début
 
-toggleMusicButton.addEventListener('click', function() {
-    if (isMusicPlaying) {
-        backgroundMusic.play(); // Pause the music
-        toggleMusicButton.textContent = 'Jouer la musique';
-    } 
-    
-});
-
-stopMusicButton.addEventListener('click', function() {
+toggleMusicButton.addEventListener('click', function () {
   if (isMusicPlaying) {
-    backgroundMusic.pause(); // Play the music
-    stopMusicButton.textContent = 'Arrêter la musique';
-  } 
-  
+    backgroundMusic.play(); // Arrêter la musique
+    toggleMusicButton.textContent = 'Jouer la musique';
+  }
+
 });
 
-// Get a reference to the wireframe checkbox
+stopMusicButton.addEventListener('click', function () {
+  if (isMusicPlaying) {
+    backgroundMusic.pause(); // Jouer la musique
+    stopMusicButton.textContent = 'Arrêter la musique';
+  }
+
+});
+
+// Prend la référence de la case à cocher du wireframe 
 const wireframeCheckbox = document.getElementById('wireframeCheckbox');
 
-// Add an event listener to handle the change event
+// Ajout d'un event listener pour la case à cocher
 wireframeCheckbox.addEventListener('change', () => {
-    // If the checkbox is checked, set wireframe mode to true, otherwise set it to false
-    const wireframeMode = wireframeCheckbox.checked;
-    setWireframeMode(wireframeMode);
+  // Si la case à cocher est cochée on le met à true, sinon on le met à false
+  const wireframeMode = wireframeCheckbox.checked;
+  setWireframeMode(wireframeMode);
 });
 
-// Function to toggle wireframe mode
+// Fonction permettant d'activer le wireframe
 function setWireframeMode(enabled) {
-    // Loop through all objects in the scene and set their material's wireframe property
-    scene.traverse((child) => {
-        if (child instanceof THREE.Mesh) {
-            child.material.wireframe = enabled;
-        }
-    });
+  // Analyse les objets 3D présents dans la scène et active leurs wireframes
+  scene.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.material.wireframe = enabled;
+    }
+  });
 }
 
-// Ajout d'un listener à la fenêtre, afin qu'on puisse changer la taille et ainsi de suite
+// Ajout d'un event listener à la fenêtre, afin qu'on puisse changer la taille et ainsi de suite
 window.addEventListener("resize", function () {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -250,26 +272,40 @@ document.onmousemove = (e) => {
 // Tableau pour garder les particules
 const particules = [];
 
-// Create particle geometry and material
+
+
+// Création des matériels des particules
 const particuleGeometry = new THREE.BufferGeometry();
 const particuleMaterial = new THREE.PointsMaterial({
-    color: 0xffffff,
-    size: 0.1 // Adjust the size of particles
+  vertexColors: true, // Enable vertex colors
+  size: 2,// Adjust the size of particles
+  
 });
 
 // Créer un nombre large de particules
 const numParticules = 1000; // Ajuster le nombre de particules
 const position = new Float32Array(numParticules * 3); // Chaque particule à trois type de coordonnées (x, y, z)
+const colors = new Float32Array(numParticules * 3); // Tableau pour stocker les couleurs RGB de particules
 
 for (let i = 0; i < numParticules * 3; i += 3) {
-    // Randomizer la position selon l'intervalle
-    position[i] = (Math.random() - 0.5) * 100; // x
-    position[i + 1] = (Math.random() - 0.5) * 100; // y
-    position[i + 2] = (Math.random() - 0.5) * 100; // z
+
+  //Défini une position aléatoire pour chaque particule selon l'intervalle
+  position[i] = (Math.random() - 0.5) * 1000; // x
+  position[i + 1] = (Math.random() - 0.5) * 1000; // y
+  position[i + 2] = (Math.random() - 0.5) * 1000; // z
+
+  // Défini une taille aléatoire pour chaque particule
+  sizes[i] = Math.random() * 2; 
+
+  // Défini les valeurs RGB aléatoirement pour chaque particule
+  colors[i] = Math.random(); // Rouge
+  colors[i + 1] = Math.random(); // Vert
+  colors[i + 2] = Math.random(); // Bleu
 }
 
-// Ajouter la position à la géométrie
+// Ajouter la position à la géométrie et la couleur
 particuleGeometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
+particuleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
 
 // Créer le système de particules
 const particuleSystem = new THREE.Points(particuleGeometry, particuleMaterial);
@@ -277,73 +313,28 @@ scene.add(particuleSystem);
 
 // Fonction pour animer les particules
 function animateParticles() {
-    
+
+  // Prend la position de tout les particules
+  const position = particuleGeometry.attributes.position.array;
+
+  // Defini la vitesse de rotation
+  const rotationSpeed = 0.01;
+
+  // Met à jour la position selon la rotation
+  for (let i = 0; i < position.length; i += 3) {
+      // Get the current position of the particle
+      const x = position[i];
+      const y = position[i + 1];
+      const z = position[i + 2];
+
+      // Met à jour la rotation selon la position
+      position[i] = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+      position[i + 2] = x * Math.sin(rotationSpeed) + z * Math.cos(rotationSpeed);
+  }
+
+  // Met à jour la position des particules avec le buffer geometry
+  particuleGeometry.attributes.position.needsUpdate = true;
 }
-
-// Fonction pour créer les particules
-// function createFireworks(scene) {
-//   const fireworksGeometry = new THREE.BufferGeometry();
-//   const fireworksVertices = [];
-//   const fireworksColors = [];
-
-//   // Create particles for the fireworks
-//   for (let i = 0; i < 100; i++) {
-//       fireworksVertices.push(
-//           Math.random() * 200 - 100, // Random x position within a range
-//           Math.random() * 100 + 50, // Random y position within a range
-//           Math.random() * 200 - 100 // Random z position within a range
-//       );
-
-//       // Random color for each particle
-//       fireworksColors.push(Math.random(), Math.random(), Math.random());
-//   }
-
-//   fireworksGeometry.setAttribute('position', new THREE.Float32BufferAttribute(fireworksVertices, 3));
-//   fireworksGeometry.setAttribute('color', new THREE.Float32BufferAttribute(fireworksColors, 3));
-
-//   // Define the material for the fireworks particles
-//   const fireworksMaterial = new THREE.PointsMaterial({
-//       size: 5,
-//       vertexColors: true // Enable vertex colors
-//   });
-
-//   // Create the particle system
-//   const fireworksParticleSystem = new THREE.Points(fireworksGeometry, fireworksMaterial);
-
-//   scene.add(fireworksParticleSystem);
-
-//   // Function to animate the fireworks
-//   function animateFireworks() {
-//       fireworksParticleSystem.rotation.y += 0.01; // Rotate the fireworks
-
-//       // Update the positions and colors of the particles to create the effect
-//       const positions = fireworksParticleSystem.geometry.attributes.position.array;
-//       const colors = fireworksParticleSystem.geometry.attributes.color.array;
-//       for (let i = 0; i < positions.length; i += 3) {
-        
-//           // Move particles downward
-//           positions[i + 1] -= Math.random() * 0.5;
-//           if (positions[i + 1] < -50) { // Reset particle position if it falls below a certain threshold
-//               positions[i] = Math.random() * 200 - 100; // Random x position within a range
-//               positions[i + 1] = Math.random() * 100 + 50; // Random y position within a range
-//               positions[i + 2] = Math.random() * 200 - 100; // Random z position within a range
-//           }
-
-//           // Update colors randomly
-//           colors[i] += (Math.random() - 0.5) * 0.1; // Red channel
-//           colors[i + 1] += (Math.random() - 0.5) * 0.1; // Green channel
-//           colors[i + 2] += (Math.random() - 0.5) * 0.1; // Blue channel
-//       }
-
-//       fireworksParticleSystem.geometry.attributes.position.needsUpdate = true; // Update position
-//       fireworksParticleSystem.geometry.attributes.color.needsUpdate = true; // Update color
-//   }
-
-//   return animateFireworks;
-// }
-
-// // Add the fireworks effect to the scene
-// const animateFireworks = createFireworks(scene);
 
 
 // Commence le rendu de l'objet 3D
