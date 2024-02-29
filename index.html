@@ -26,14 +26,14 @@
           <input type="range" id="rotationSlider" min="-180" max="180" step="1" value="0">
           <label for="rotationSlider">Luminosité:</label>
           <input type="range" id="brightnessSlider" min="0" max="2" step="0.1" value="1">
+          <label for="wireframeCheckbox">Wireframe:</label>
           <input type="checkbox" id="wireframeCheckbox">
-          <label for="wireframeCheckbox">Show Wireframe</label>
           <input type="color" id="bgColorPicker" value="#ffffff">
           <button id="toggleMusic">Activer la musique</button>
           <button id="stopMusic">Arrêter la musique</button>
           <audio id="backgroundMusic" loop>
             <source src="comealong.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
+            Votre navigateur ne supporte pas la source audio
           </audio>
         
       </div>
@@ -44,8 +44,6 @@
       
       <div id="container3D"></div>
      
-
-      
     </main>
 
     <script type="module" src="main.js"></script>

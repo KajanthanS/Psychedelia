@@ -56,7 +56,7 @@ loader.load(
     object = gltf.scene;
     scene.add(object);
 
-    // Hide the loading page after 5 seconds
+    // cache la page loader après un délais de 2.5 secondes 
     setTimeout(() => {
       loaderPage.style.display = "none";
     }, 2500);
@@ -118,7 +118,7 @@ if (objToRender === "Psychedelia") {
 function animate() {
   requestAnimationFrame(animate);
 
-  // animateFireworks(); // Call the fireworks animation function
+  // animateFireworks(); 
   animateParticles();
 
   // Rotation de l'objet
@@ -247,40 +247,40 @@ document.onmousemove = (e) => {
   mouseY = e.clientY;
 }
 
-// Array to hold all the particles
-const particles = [];
+// Tableau pour garder les particules
+const particules = [];
 
 // Create particle geometry and material
-const particleGeometry = new THREE.BufferGeometry();
-const particleMaterial = new THREE.PointsMaterial({
+const particuleGeometry = new THREE.BufferGeometry();
+const particuleMaterial = new THREE.PointsMaterial({
     color: 0xffffff,
     size: 0.1 // Adjust the size of particles
 });
 
-// Create a large number of particles
-const numParticles = 1000; // Adjust the number of particles
-const positions = new Float32Array(numParticles * 3); // Each particle has 3 coordinates (x, y, z)
+// Créer un nombre large de particules
+const numParticules = 1000; // Ajuster le nombre de particules
+const position = new Float32Array(numParticules * 3); // Chaque particule à trois type de coordonnées (x, y, z)
 
-for (let i = 0; i < numParticles * 3; i += 3) {
-    // Randomize particle position within a certain range
-    positions[i] = (Math.random() - 0.5) * 100; // x
-    positions[i + 1] = (Math.random() - 0.5) * 100; // y
-    positions[i + 2] = (Math.random() - 0.5) * 100; // z
+for (let i = 0; i < numParticules * 3; i += 3) {
+    // Randomizer la position selon l'intervalle
+    position[i] = (Math.random() - 0.5) * 100; // x
+    position[i + 1] = (Math.random() - 0.5) * 100; // y
+    position[i + 2] = (Math.random() - 0.5) * 100; // z
 }
 
-// Add positions to geometry
-particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+// Ajouter la position à la géométrie
+particuleGeometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
 
-// Create the particle system
-const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
-scene.add(particleSystem);
+// Créer le système de particules
+const particuleSystem = new THREE.Points(particuleGeometry, particuleMaterial);
+scene.add(particuleSystem);
 
-// Function to animate the particles
+// Fonction pour animer les particules
 function animateParticles() {
-    // No need to update particle positions since they are already set
+    
 }
 
-// // Fonction pour créer les particules
+// Fonction pour créer les particules
 // function createFireworks(scene) {
 //   const fireworksGeometry = new THREE.BufferGeometry();
 //   const fireworksVertices = [];
