@@ -26,6 +26,12 @@ scene.add(camera)
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
+// Loading Page
+const loadingPage = document.getElementById("loadingPage");
+
+// Loading Message
+const loadingMessage = document.getElementById("loadingMessage");
+
 
 // Variable globale pour le modèle 3D
 let object;
@@ -39,14 +45,21 @@ let objToRender = 'Psychedelia';
 // Permet de charger le fichier .gltf
 const loader = new GLTFLoader();
 
+
 // Chargement du fichier
 loader.load(
   `public/${objToRender}/scene.gltf`,
   function (gltf) {
+    
 
     // Lorsque l'objet est chargé, il sera ajouté à la scène
     object = gltf.scene;
     scene.add(object);
+
+    // Hide the loading page after 5 seconds
+    setTimeout(() => {
+      loaderPage.style.display = "none";
+    }, 2500);
 
     // Calcule le bounding box de l'objet 3D
     const box = new THREE.Box3().setFromObject(object);
@@ -73,13 +86,10 @@ loader.load(
   },
 
   function (error) {
-    // Si il y a une erreu, un message d'erreur s'affiche dans la console
+    // Si il y a une erreur, un message d'erreur s'affiche dans la console
     console.error(error);
   }
 );
-
-
-
 
 
 // Création de la fenêtre de rendu
@@ -109,6 +119,7 @@ function animate() {
   requestAnimationFrame(animate);
 
   // animateFireworks(); // Call the fireworks animation function
+  animateParticles();
 
   // Rotation de l'objet
   if (object) {
@@ -180,6 +191,48 @@ function handleRotation() {
 // Ajout de l'event listener au slider
 document.getElementById('rotationSlider').addEventListener('input', handleRotation)
 
+const backgroundMusic = document.getElementById('backgroundMusic');
+const toggleMusicButton = document.getElementById('toggleMusic');
+const stopMusicButton = document.getElementById('stopMusic');
+
+let isMusicPlaying = true; // Initially, music is playing
+
+toggleMusicButton.addEventListener('click', function() {
+    if (isMusicPlaying) {
+        backgroundMusic.play(); // Pause the music
+        toggleMusicButton.textContent = 'Jouer la musique';
+    } 
+    
+});
+
+stopMusicButton.addEventListener('click', function() {
+  if (isMusicPlaying) {
+    backgroundMusic.pause(); // Play the music
+    stopMusicButton.textContent = 'Arrêter la musique';
+  } 
+  
+});
+
+// Get a reference to the wireframe checkbox
+const wireframeCheckbox = document.getElementById('wireframeCheckbox');
+
+// Add an event listener to handle the change event
+wireframeCheckbox.addEventListener('change', () => {
+    // If the checkbox is checked, set wireframe mode to true, otherwise set it to false
+    const wireframeMode = wireframeCheckbox.checked;
+    setWireframeMode(wireframeMode);
+});
+
+// Function to toggle wireframe mode
+function setWireframeMode(enabled) {
+    // Loop through all objects in the scene and set their material's wireframe property
+    scene.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+            child.material.wireframe = enabled;
+        }
+    });
+}
+
 // Ajout d'un listener à la fenêtre, afin qu'on puisse changer la taille et ainsi de suite
 window.addEventListener("resize", function () {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -194,7 +247,40 @@ document.onmousemove = (e) => {
   mouseY = e.clientY;
 }
 
-// Fonction pour créer les particules
+// Array to hold all the particles
+const particles = [];
+
+// Create particle geometry and material
+const particleGeometry = new THREE.BufferGeometry();
+const particleMaterial = new THREE.PointsMaterial({
+    color: 0xffffff,
+    size: 0.1 // Adjust the size of particles
+});
+
+// Create a large number of particles
+const numParticles = 1000; // Adjust the number of particles
+const positions = new Float32Array(numParticles * 3); // Each particle has 3 coordinates (x, y, z)
+
+for (let i = 0; i < numParticles * 3; i += 3) {
+    // Randomize particle position within a certain range
+    positions[i] = (Math.random() - 0.5) * 100; // x
+    positions[i + 1] = (Math.random() - 0.5) * 100; // y
+    positions[i + 2] = (Math.random() - 0.5) * 100; // z
+}
+
+// Add positions to geometry
+particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+// Create the particle system
+const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+scene.add(particleSystem);
+
+// Function to animate the particles
+function animateParticles() {
+    // No need to update particle positions since they are already set
+}
+
+// // Fonction pour créer les particules
 // function createFireworks(scene) {
 //   const fireworksGeometry = new THREE.BufferGeometry();
 //   const fireworksVertices = [];
@@ -234,6 +320,7 @@ document.onmousemove = (e) => {
 //       const positions = fireworksParticleSystem.geometry.attributes.position.array;
 //       const colors = fireworksParticleSystem.geometry.attributes.color.array;
 //       for (let i = 0; i < positions.length; i += 3) {
+        
 //           // Move particles downward
 //           positions[i + 1] -= Math.random() * 0.5;
 //           if (positions[i + 1] < -50) { // Reset particle position if it falls below a certain threshold

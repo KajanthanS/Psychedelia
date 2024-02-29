@@ -18,6 +18,53 @@ body
     outline: none;
 }
 
+#loaderPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100; 
+  opacity: 1; 
+  animation: fadeOut 4s forwards; /* Animation for fade-in effect */
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+#loader {
+  border: 16px solid #ff0ec7;
+  border-radius: 50%;
+  border-top: 16px solid #f3cf06;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#messageLoader {
+  margin-top: 20px;
+  font-size: 24px;
+  color: white;
+}
 
   
   #zoomIn,
