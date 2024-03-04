@@ -18,20 +18,25 @@
       <h3 class="titre">𐌐𐌔𐌙𐌂𐋅𐌄𐌃𐌄𐌋𐌉𐌀</h3>
       <div id="controlesPopup" class="popup">
         <span id="fermer" onclick="fermerPopup()">&times;</span>
-        <h2>Contrôles</h2>
+        <h2>CONTRÔLES</h2>
        
           <label for="rotationSlider">Zoom:</label>
-          <input type="range" id="zoomSlider" min="1" max="100" value="50">
+          <input type="range" id="zoomSlider" min="100" max="200" step="1" value="0">
           <label for="rotationSlider">Rotation:</label>
           <input type="range" id="rotationSlider" min="-180" max="180" step="1" value="0">
           <label for="rotationSlider">Luminosité:</label>
           <input type="range" id="brightnessSlider" min="0" max="2" step="0.1" value="1">
+          <label for="bgColorPicker">Couleur d'arrière plan:</label>
+          <input type="color" id="bgColorPicker" value="#ffffff">
           <label for="wireframeCheckbox">Wireframe:</label>
           <input type="checkbox" id="wireframeCheckbox">
-          <input type="color" id="bgColorPicker" value="#ffffff">
-          <button id="toggleMusic">Activer la musique</button>
+          <label for="playButton">Animation:</label>
+          <button id="playButton">Play</button>
+          <button id="stopButton">Stop</button>
+          <label for="toggleMusic">Musique:</label>
+          <button id="toggleMusic">Jouer la musique</button>
           <button id="stopMusic">Arrêter la musique</button>
-          <audio id="backgroundMusic" loop>
+          <audio id="backgroundMusic" loop autoplay>
             <source src="comealong.mp3" type="audio/mpeg">
             Votre navigateur ne supporte pas la source audio
           </audio>

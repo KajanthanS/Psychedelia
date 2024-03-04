@@ -60,7 +60,6 @@ loader.load(
   `public/${objToRender}/scene.gltf`,
   function (gltf) {
 
-
     // Lorsque l'objet est chargé, il sera ajouté à la scène
     object = gltf.scene;
     scene.add(object);
@@ -132,11 +131,26 @@ if (objToRender === "Psychedelia") {
 
 // ********************************** RENDU + ANIMATION ********************************
 
-// Rendu de la scène
+const playButton = document.getElementById('playButton');
+const stopButton = document.getElementById('stopButton');
+
+let animationJoue = true; // L'animation joue au début
+
+playButton.addEventListener('click', function() {
+  animationJoue = true; // Défini animationJoue à true lorsque le bouton arrêter est cliqué
+  animate(); // Commence l'animation
+});
+
+stopButton.addEventListener('click', function() {
+  animationJoue = false; // Défini animationJoue à false lorsque le bouton arrêter est cliqué
+});
+
+// Rendu de la scène avec animation contrôlée par la variable animationJoue
 function animate() {
+  if (!animationJoue) return; // Arrête l'animation si animationJouer est false
+  
   requestAnimationFrame(animate);
 
-  // animateFireworks(); 
   animateParticles();
 
   // Rotation de l'objet
@@ -151,17 +165,19 @@ function animate() {
 
 // ********************************** CONTRÔLES ********************************
 
-// Fonction pour montrer la fenêtre de contrôles 
+// Fonction pour ouvrir la fenêtre de contrôles
 function montrerPopup() {
-  document.getElementById('controlesPopup').style.display = 'block';
+  const popup = document.getElementById('controlesPopup');
+  popup.classList.add('active');
 }
 
 // Fonction pour fermer la fenêtre de contrôles
 function fermerPopup() {
-  document.getElementById('controlesPopup').style.display = 'none';
+  const popup = document.getElementById('controlesPopup');
+  popup.classList.remove('active');
 }
 
-// Ajout de l'event listener au bouton pour afficher la fenêtre de contôles
+// Ajout d'event listener pour detecter l'ouverture et la fermeture de la fenêtre de contrôles
 document.getElementById('montrerControles').addEventListener('click', montrerPopup);
 document.getElementById('fermer').addEventListener('click', fermerPopup);
 
@@ -169,10 +185,10 @@ document.getElementById('fermer').addEventListener('click', fermerPopup);
 // Fonction pour gérer le slider pour zoomer
 document.getElementById("zoomSlider").addEventListener("input", function () {
   const value = parseFloat(this.value);
-  const minZoom = 1; // Adjust as needed
-  const maxZoom = 100; // Adjust as needed
-  const range = maxZoom - minZoom;
-  const zoom = minZoom + (value / 100) * range;
+  const minZoom = 1; 
+  const maxZoom = 100;
+  const range = Math.log(maxZoom - minZoom);
+  const zoom = minZoom + Math.exp((value / 100) * range);
 
   // Mise à jour de la position de la caméra selon le zoom
   camera.position.z = zoom;
@@ -217,6 +233,8 @@ const backgroundMusic = document.getElementById('backgroundMusic');
 const toggleMusicButton = document.getElementById('toggleMusic');
 const stopMusicButton = document.getElementById('stopMusic');
 
+backgroundMusic.play();
+
 let isMusicPlaying = true; // La musique joue au début
 
 toggleMusicButton.addEventListener('click', function () {
@@ -254,6 +272,7 @@ function setWireframeMode(enabled) {
     }
   });
 }
+
 
 // Ajout d'un event listener à la fenêtre, afin qu'on puisse changer la taille et ainsi de suite
 window.addEventListener("resize", function () {
