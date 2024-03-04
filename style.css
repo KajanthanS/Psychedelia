@@ -1,22 +1,21 @@
-*
-{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
 
 html,
-body
-{
-    overflow: hidden;
-    background-color: black;
+body {
+  overflow: hidden;
+  background-color: black;
+
 }
 
-.webgl
-{
-    position: fixed;
-    top: 0;
-    left: 0;
-    outline: none;
+.webgl {
+  position: fixed;
+  top: 0;
+  left: 0;
+  outline: none;
+
 }
 
 #loaderPage {
@@ -29,8 +28,8 @@ body
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 100; 
-  opacity: 1; 
+  z-index: 100;
+  opacity: 1;
 
 }
 
@@ -41,13 +40,14 @@ body
   width: 50px;
   height: 50px;
   animation: spin 2s linear infinite;
-  
+
 }
 
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -57,10 +57,10 @@ body
   margin-top: 20px;
   font-size: 24px;
   color: white;
-  
+
 }
 
-#montrerControles{
+#montrerControles {
   cursor: pointer;
   position: absolute;
   background-color: #FF5EA1;
@@ -68,21 +68,18 @@ body
   border: none;
   border-radius: 30px 30px;
   padding: 1rem 1.5rem;
-  font-size: 1rem;
+  font-size: 1.5rem;
   top: 5%;
   left: 2%;
-  
-  
 
 }
 
-#montrerControles::after{
+#montrerControles::after {
   content: "☰";
-  
 
 }
 
-.titre{
+.titre {
   color: black;
   font-size: 2rem;
   position: absolute;
@@ -93,107 +90,112 @@ body
   background-color: #FFCE3A;
   border-radius: 30px 30px;
   padding: 0.5rem 1.5rem;
+
 }
 
-  
-  #zoomIn,
-  #zoomOut {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  #bgColorPicker {
-    display: block;
+
+#zoomIn,
+#zoomOut {
+  display: block;
+  margin-bottom: 5px;
+
+}
+
+#bgColorPicker {
+  display: block;
+
+}
+
+
+
+.popup {
+  position: fixed;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 0;
+  left: 0;
+  font-size: 1rem;
+  width: 100vw;
+  min-height: 10vh;
+  background-color: #FF5EA1;
+  color: white;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+
+}
+
+.popup.active {
+  transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+
+}
+
+.popup h2 {
+  margin-top: 0;
+  color: black;
+  text-shadow: 3px 3px white;
+
+}
+
+.popup>* {
+  margin-bottom: 10px;
+
+}
+
+
+#fermer {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  cursor: pointer;
+  font-size: 1.5rem;
+
+}
+
+@media (min-width: 992px) {
+
+  #montrerControles {
+    position: absolute;
+    background-color: #FF5EA1;
+    color: white;
+    border: none;
+    border-radius: 30px 30px;
+    padding: 1rem 1.5rem;
+    font-size: 0.8rem;
+    top: 5%;
+    left: 2%;
+    transition: transform 1s ease-in-out;
+
   }
 
-  
+  #montrerControles:hover {
+
+    background-color: white;
+    color: black;
+    transform: scale(110%);
+    font-size: 0.8rem;
+    top: 5%;
+    left: 2%;
+
+  }
+
+  #montrerControles::after {
+    content: ">> OUVRIR LES CONTRÔLES <<";
+
+  }
 
   .popup {
     position: fixed;
     flex-direction: column;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    bottom: 0;
-    left: 0;
-    font-size: 1rem;
-    width: 95vw; 
-    min-height: 10vh; 
-    background-color: #FF5EA1;
-    color: white;
-    padding: 1rem; 
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
-    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-}
-
-  .popup.active {
-    transform: translateX(0); 
-    opacity: 1;
-    visibility: visible;
-  }
-  
-  .popup h2 {
-    margin-top: 0;
-    color: black;
-    text-shadow: 3px 3px white;
-    
-  }
-   
-.popup > * {
-  margin-bottom: 10px; 
-}
-  
-  
-  #fermer {
-    position: absolute;
-    top: 5px;
-    right: 15px;
-    cursor: pointer;
-    font-size: 1.5rem;
-
-    
-   
-  }
-
-  @media (min-width: 992px) {
-    
-    #montrerControles{
-      position: absolute;
-      background-color: #FF5EA1;
-      color: white;
-      border: none;
-      border-radius: 30px 30px;
-      padding: 1rem 1.5rem;
-      font-size: 0.8rem;
-      top: 5%;
-      left: 2%;
-      transition: transform 1s ease-in-out;
-  
-    }
-
-    #montrerControles:hover{
-      
-      background-color: white;
-      color: black;
-      transform: scale(110%);
-      font-size: 0.8rem;
-      top: 5%;
-      left: 2%;
-  
-    }
-
-    #montrerControles::after {
-      content: ">> OUVRIR LES CONTRÔLES <<";
-  }
-
-  .popup {
-    position: fixed;
-    flex-direction: column; 
-    justify-content: space-between; 
-    align-items: flex-start; 
+    justify-content: space-between;
+    align-items: flex-start;
     top: 0;
     left: 0;
     height: 90vh;
@@ -207,10 +209,11 @@ body
     opacity: 0;
     visibility: hidden;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-  }
-  
 
-  .titre{
+  }
+
+
+  .titre {
     color: black;
     font-size: 3rem;
     position: absolute;
@@ -221,6 +224,7 @@ body
     background-color: #FFCE3A;
     border-radius: 30px 30px;
     padding: 0.5rem 1.5rem;
+
   }
 
 }
