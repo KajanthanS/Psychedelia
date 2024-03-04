@@ -278,14 +278,14 @@ const particules = [];
 const particuleGeometry = new THREE.BufferGeometry();
 const particuleMaterial = new THREE.PointsMaterial({
   vertexColors: true, // Enable vertex colors
-  size: 2,// Adjust the size of particles
+  size: 3,// Adjust the size of particles
   
 });
 
 // Créer un nombre large de particules
 const numParticules = 1000; // Ajuster le nombre de particules
 const position = new Float32Array(numParticules * 3); // Chaque particule à trois type de coordonnées (x, y, z)
-const colors = new Float32Array(numParticules * 3); // Tableau pour stocker les couleurs RGB de particules
+const couleurs = new Float32Array(numParticules * 3); // Tableau pour stocker les couleurs RGB de particules
 
 for (let i = 0; i < numParticules * 3; i += 3) {
 
@@ -298,14 +298,14 @@ for (let i = 0; i < numParticules * 3; i += 3) {
   sizes[i] = Math.random() * 2; 
 
   // Défini les valeurs RGB aléatoirement pour chaque particule
-  colors[i] = Math.random(); // Rouge
-  colors[i + 1] = Math.random(); // Vert
-  colors[i + 2] = Math.random(); // Bleu
+  couleurs[i] = Math.random(); // Rouge
+  couleurs[i + 1] = Math.random(); // Vert
+  couleurs[i + 2] = Math.random(); // Bleu
 }
 
 // Ajouter la position à la géométrie et la couleur
 particuleGeometry.setAttribute('position', new THREE.BufferAttribute(position, 3));
-particuleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+particuleGeometry.setAttribute('color', new THREE.BufferAttribute(couleurs, 3));
 
 // Créer le système de particules
 const particuleSystem = new THREE.Points(particuleGeometry, particuleMaterial);
@@ -318,7 +318,7 @@ function animateParticles() {
   const position = particuleGeometry.attributes.position.array;
 
   // Defini la vitesse de rotation
-  const rotationSpeed = 0.01;
+  const rotationSpeed = 0.005;
 
   // Met à jour la position selon la rotation
   for (let i = 0; i < position.length; i += 3) {
