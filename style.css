@@ -24,32 +24,108 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background: radial-gradient(circle, #ed7f2b, #FF5EA1);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
   opacity: 1;
+  margin-bottom: 20px;
 
 }
+
 
 #loader {
-  border: 16px solid #ff0ec7;
+  position: relative;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
-  border-top: 16px solid #f3cf06;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
+  box-sizing: border-box;
+  background: #fff;
+  border: 8px solid #131a1d;
+  overflow: hidden;
+  box-sizing: border-box;
 
 }
 
-@keyframes spin {
+#loader::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -50%;
+  width: 100%;
+  height: 100%;
+  background: #ff752b;
+  z-index: 5;
+  border-bottom: 8px solid #131a1d;
+  box-sizing: border-box;
+  animation: eyeShade 3s infinite;
+}
+
+#loader::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  bottom: 15px;
+  width: 32px;
+  z-index: 2;
+  height: 32px;
+  background: rgb(9, 143, 253);
+  border-radius: 50%;
+  animation: eyeMove 3s infinite;
+}
+
+@keyframes eyeShade {
   0% {
-    transform: rotate(0deg);
+    transform: translateY(0)
+  }
+
+  20% {
+    transform: translateY(5px)
+  }
+
+  40%,
+  50% {
+    transform: translateY(-5px)
+  }
+
+  60% {
+    transform: translateY(-8px)
+  }
+
+  75% {
+    transform: translateY(5px)
   }
 
   100% {
-    transform: rotate(360deg);
+    transform: translateY(10px)
+  }
+}
+
+@keyframes eyeMove {
+  0% {
+    transform: translate(0, 0)
+  }
+
+  20% {
+    transform: translate(0px, 5px)
+  }
+
+  40%,
+  50% {
+    transform: translate(0px, -5px)
+  }
+
+  60% {
+    transform: translate(-10px, -5px)
+  }
+
+  75% {
+    transform: translate(-20px, 5px)
+  }
+
+  100% {
+    transform: translate(0, 10px)
   }
 }
 
@@ -57,6 +133,7 @@ body {
   margin-top: 20px;
   font-size: 24px;
   color: white;
+  margin-left: 20px;
 
 }
 
@@ -171,7 +248,7 @@ body {
     font-size: 0.8rem;
     top: 5%;
     left: 2%;
-    transition: transform 1s ease-in-out;
+    transition: transform 0.3s ease-in-out;
 
   }
 
@@ -197,7 +274,7 @@ body {
     right: 15px;
     cursor: pointer;
     font-size: 1.5rem;
-  
+
   }
 
   .popup {
@@ -235,5 +312,63 @@ body {
     padding: 0.5rem 1.5rem;
 
   }
+
+  footer {
+    position: absolute;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    bottom: 0;
+    width: 100%;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  footer p{
+    text-shadow: 2px 2px black;
+  }
+
+  .reseauxSociaux {
+    position: absolute;
+    font-size: 2rem;
+    bottom: 20px;
+    right: 20px;
+
+  }
+
+  .reseauxSociaux a {
+    background-color: white;
+    padding: 0.2em 0.8rem;
+    border-radius: 50%;
+    margin: 0 10px;
+    display: inline-block;
+    animation: jump 0.6s infinite alternate;
+  }
+
+  .reseauxSociaux a:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .reseauxSociaux a:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .reseauxSociaux a:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  /* Animation jump des icônes */
+  @keyframes jump {
+    0% {
+      transform: translateY(0);
+    }
+
+    100% {
+      transform: translateY(-10px);
+    }
+  }
+
+
 
 }

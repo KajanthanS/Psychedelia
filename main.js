@@ -26,6 +26,7 @@ const sizes = {
 
 //Création d'une nouvelle caméra et définition de la position
 const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 1, 1000);
+camera.position.set( 7, 4, 1 );
 scene.add(camera)
 
 
@@ -85,6 +86,14 @@ loader.load(
 
     // Placé au centre de l'objet
     camera.lookAt(center);
+
+    const controls = new OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 2;
+				controls.maxDistance = 500;
+				controls.maxPolarAngle = Math.PI / 2;
+				controls.target.set( 0, 1, 0 );
+				controls.update();
+
   },
 
   function (xhr) {
@@ -114,7 +123,7 @@ document.getElementById("container3D").appendChild(renderer.domElement);
 
 // Ajout des lumières afin qu'on puisse voir l'objet
 const topLight = new THREE.DirectionalLight(0xffffff, 1);
-topLight.position.set(500, 500, 500)
+topLight.position.set(0, 500, 0)
 topLight.castShadow = true;
 scene.add(topLight);
 
