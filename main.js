@@ -26,7 +26,7 @@ const sizes = {
 
 //Création d'une nouvelle caméra et définition de la position
 const camera = new THREE.PerspectiveCamera(40, sizes.width / sizes.height, 1, 1000);
-camera.position.set( 7, 4, 1 );
+camera.position.set(7, 4, 1);
 scene.add(camera)
 
 
@@ -34,17 +34,17 @@ scene.add(camera)
 let mouseX = window.innerWidth / 2;
 let mouseY = window.innerHeight / 2;
 
-// Loading Page
+// Page loader
 const loadingPage = document.getElementById("loadingPage");
 
-// Loading Message
+// Message loader
 const loadingMessage = document.getElementById("loadingMessage");
 
 
 // Variable globale pour le modèle 3D
 let object;
 
-// Controls du mouvement orbit de la caméra
+// Contrôles du mouvement orbit de la caméra
 let controls;
 
 // Objet à être rendu
@@ -52,7 +52,6 @@ let objToRender = 'Psychedelia';
 
 // Permet de charger le fichier .gltf
 const loader = new GLTFLoader();
-
 
 
 // ********************************** CHARGEMENT FICHIER + CAMÉRA ********************************
@@ -87,12 +86,12 @@ loader.load(
     // Placé au centre de l'objet
     camera.lookAt(center);
 
-    const controls = new OrbitControls( camera, renderer.domElement );
-				controls.minDistance = 2;
-				controls.maxDistance = 500;
-				controls.maxPolarAngle = Math.PI / 2;
-				controls.target.set( 0, 1, 0 );
-				controls.update();
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.minDistance = 2;
+    controls.maxDistance = 500;
+    controls.maxPolarAngle = Math.PI / 2;
+    controls.target.set(0, 1, 0);
+    controls.update();
 
   },
 
@@ -115,7 +114,8 @@ loader.load(
 // Création de la fenêtre de rendu
 const renderer = new THREE.WebGLRenderer({
   antialias: true
-}); //Alpha: true allows for the transparent background
+});
+
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 // Ajout de la fenêtre de rendu au DOM
@@ -131,7 +131,11 @@ const ambientLight = new THREE.AmbientLight(0x333333, objToRender === "Psychedel
 scene.background = new THREE.Color(0xD397F8);
 scene.add(ambientLight);
 
-// Ajout du controle de mouvement en orbit de la caméra
+// Active le fog dans la scène
+scene.fog = new THREE.Fog(0xFFFFFF, 100, 1000); // Ajuster la densité selon le besoin
+
+
+// Ajout du contrôle de mouvement en orbit de la caméra
 if (objToRender === "Psychedelia") {
   controls = new OrbitControls(camera, renderer.domElement);
 }
@@ -140,35 +144,46 @@ if (objToRender === "Psychedelia") {
 
 // ********************************** RENDU + ANIMATION ********************************
 
-const playButton = document.getElementById('playButton');
-const stopButton = document.getElementById('stopButton');
+// Prend l'élément checkbox
+const animationCheckbox = document.getElementById('activerAnim');
 
-let animationJoue = true; // L'animation joue au début
+// Met le checkbox à checked
+animationCheckbox.checked = true;
 
-playButton.addEventListener('click', function() {
-  animationJoue = true; // Défini animationJoue à true lorsque le bouton arrêter est cliqué
-  animate(); // Commence l'animation
-});
+let animationJoue = true; // Animation joue au début
+let animationRunning = false; // Vérifie si l'animation joue déjà
 
-stopButton.addEventListener('click', function() {
-  animationJoue = false; // Défini animationJoue à false lorsque le bouton arrêter est cliqué
+// Ajout d'un event listener pour le checkbox
+animationCheckbox.addEventListener('change', function () {
+  animationJoue = this.checked; // Défini l'animation selon l'état du checkbox
+
+  // Si l'animation ne joue pas on active l'animation
+  if (animationJoue && !animationRunning) {
+    animate();
+  }
 });
 
 // Rendu de la scène avec animation contrôlée par la variable animationJoue
 function animate() {
-  if (!animationJoue) return; // Arrête l'animation si animationJouer est false
-  
+  animationRunning = true; // Défini l'animation en train de jouer
+
   requestAnimationFrame(animate);
 
-  animateParticles();
+  // Anime l'objet seulement si animationJoue est true
+  if (animationJoue) {
+    animateParticles();
 
-  // Rotation de l'objet
-  if (object) {
-    object.rotation.y += 0.005;
+    // Rotation de l'objet
+    if (object) {
+      object.rotation.y += 0.005;
+    }
   }
+
+
 
   renderer.render(scene, camera);
 }
+
 
 
 
@@ -194,13 +209,20 @@ document.getElementById('fermer').addEventListener('click', fermerPopup);
 // Fonction pour gérer le slider pour zoomer
 document.getElementById("zoomSlider").addEventListener("input", function () {
   const value = parseFloat(this.value);
-  const minZoom = 1; 
+  const minZoom = 1;
   const maxZoom = 100;
   const range = Math.log(maxZoom - minZoom);
   const zoom = minZoom + Math.exp((value / 100) * range);
 
-  // Mise à jour de la position de la caméra selon le zoom
-  camera.position.z = zoom;
+  // Prend le centre de l'objet
+  const box = new THREE.Box3().setFromObject(object);
+  const center = box.getCenter(new THREE.Vector3());
+
+  // calcule la nouvelle position de la caméra au zoom
+  const newCameraPosition = center.clone().add(camera.position.clone().sub(center).normalize().multiplyScalar(zoom));
+
+  // Met à jour la position de la caméra
+  camera.position.copy(newCameraPosition);
 });
 
 // Fonction pour gérer la luminosité de la scène
@@ -227,7 +249,7 @@ function handleRotation() {
   const valeurSlider = parseFloat(document.getElementById('rotationSlider').value);
   if (object) {
 
-    // Conversion de la valeur du slider en radians
+    // Convertit la valeur du slider en radians
     const radians = THREE.MathUtils.degToRad(valeurSlider);
 
     // Applique la rotation au modèle
@@ -240,27 +262,23 @@ document.getElementById('rotationSlider').addEventListener('input', handleRotati
 
 const backgroundMusic = document.getElementById('backgroundMusic');
 const toggleMusicButton = document.getElementById('toggleMusic');
-const stopMusicButton = document.getElementById('stopMusic');
+let musiqueJoue = !backgroundMusic.paused; // Vérifie si la musique joue au début
 
-backgroundMusic.play();
-
-let isMusicPlaying = true; // La musique joue au début
+updateButtonState(); // Met à jour le texte du bouton selon son état
 
 toggleMusicButton.addEventListener('click', function () {
-  if (isMusicPlaying) {
-    backgroundMusic.play(); // Arrêter la musique
-    toggleMusicButton.textContent = 'Jouer la musique';
+  musiqueJoue = !musiqueJoue;
+  if (musiqueJoue) {
+    backgroundMusic.play();
+  } else {
+    backgroundMusic.pause();
   }
-
+  updateButtonState(); // Met à jour le texte du bouton selon son état
 });
 
-stopMusicButton.addEventListener('click', function () {
-  if (isMusicPlaying) {
-    backgroundMusic.pause(); // Jouer la musique
-    stopMusicButton.textContent = 'Arrêter la musique';
-  }
-
-});
+function updateButtonState() {
+  toggleMusicButton.textContent = musiqueJoue ? 'Arrêter' : 'Jouer';
+}
 
 // Prend la référence de la case à cocher du wireframe 
 const wireframeCheckbox = document.getElementById('wireframeCheckbox');
@@ -305,9 +323,9 @@ const particules = [];
 // Création des matériels des particules
 const particuleGeometry = new THREE.BufferGeometry();
 const particuleMaterial = new THREE.PointsMaterial({
-  vertexColors: true, // Enable vertex colors
-  size: 3,// Adjust the size of particles
-  
+  vertexColors: true, 
+  size: 3, 
+
 });
 
 // Créer un nombre large de particules
@@ -323,7 +341,7 @@ for (let i = 0; i < numParticules * 3; i += 3) {
   position[i + 2] = (Math.random() - 0.5) * 1000; // z
 
   // Défini une taille aléatoire pour chaque particule
-  sizes[i] = Math.random() * 2; 
+  sizes[i] = Math.random() * 2;
 
   // Défini les valeurs RGB aléatoirement pour chaque particule
   couleurs[i] = Math.random(); // Rouge
@@ -350,14 +368,14 @@ function animateParticles() {
 
   // Met à jour la position selon la rotation
   for (let i = 0; i < position.length; i += 3) {
-      // Get the current position of the particle
-      const x = position[i];
-      const y = position[i + 1];
-      const z = position[i + 2];
+    // Get the current position of the particle
+    const x = position[i];
+    const y = position[i + 1];
+    const z = position[i + 2];
 
-      // Met à jour la rotation selon la position
-      position[i] = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
-      position[i + 2] = x * Math.sin(rotationSpeed) + z * Math.cos(rotationSpeed);
+    // Met à jour la rotation selon la position
+    position[i] = x * Math.cos(rotationSpeed) - z * Math.sin(rotationSpeed);
+    position[i + 2] = x * Math.sin(rotationSpeed) + z * Math.cos(rotationSpeed);
   }
 
   // Met à jour la position des particules avec le buffer geometry
