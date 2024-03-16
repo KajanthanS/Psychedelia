@@ -144,28 +144,46 @@ if (objToRender === "Psychedelia") {
 
 // ********************************** RENDU + ANIMATION ********************************
 
-// Prend l'élément checkbox
+// Prend l'élément checkbox pour le wireframe
+const wireframeCheckbox = document.getElementById('wireframeCheckbox');
+
+// Met le checkbox à checked
+wireframeCheckbox.checked = false;
+
+// Variable pour le wireframe
+let wireframeActive = false;
+
+// Ajout d'un event listener pour le checkbox du wireframe
+wireframeCheckbox.addEventListener('change', function () {
+  wireframeActive = this.checked; // Défini l'état du wireframe selon l'état du checkbox
+  setWireframeMode(wireframeActive); // Active ou désactive le wireframe
+});
+
+// Prend l'élément checkbox pour l'animation
 const animationCheckbox = document.getElementById('activerAnim');
 
 // Met le checkbox à checked
 animationCheckbox.checked = true;
 
-let animationJoue = true; // Animation joue au début
-let animationRunning = false; // Vérifie si l'animation joue déjà
+// Variable pour l'animation
+let animationJoue = true;
 
-// Ajout d'un event listener pour le checkbox
+// Variable pour vérifier si l'animation est en cours
+let animationRunning = false;
+
+// Ajout d'un event listener pour le checkbox de l'animation
 animationCheckbox.addEventListener('change', function () {
-  animationJoue = this.checked; // Défini l'animation selon l'état du checkbox
+  animationJoue = this.checked; // Défini l'état de l'animation selon l'état du checkbox
 
-  // Si l'animation ne joue pas on active l'animation
+  // Si l'animation est activée et qu'elle n'est pas en cours, démarre l'animation
   if (animationJoue && !animationRunning) {
     animate();
   }
 });
 
-// Rendu de la scène avec animation contrôlée par la variable animationJoue
+// Fonction pour gérer le rendu de la scène avec animation contrôlée par la variable animationJoue
 function animate() {
-  animationRunning = true; // Défini l'animation en train de jouer
+  animationRunning = true; // Défini l'animation en cours
 
   requestAnimationFrame(animate);
 
@@ -179,10 +197,42 @@ function animate() {
     }
   }
 
-
-
   renderer.render(scene, camera);
 }
+
+// Prend les conteneurs de checkbox
+const checkboxContainers = document.querySelectorAll('.checkbox-container');
+
+// ajout du click event listener pour les checkbox
+checkboxContainers.forEach(container => {
+  container.addEventListener('click', function (event) {
+    const checkbox = container.querySelector('input[type="checkbox"]');
+    if (event.target !== checkbox) {
+      checkbox.checked = !checkbox.checked; 
+      if (checkbox === wireframeCheckbox) {
+        wireframeActive = checkbox.checked;
+        setWireframeMode(wireframeActive); 
+      } else if (checkbox === animationCheckbox) {
+        animationJoue = checkbox.checked; 
+        if (animationJoue && !animationRunning) {
+          animate(); 
+        }
+      }
+    }
+  });
+});
+
+// Prend tout les labels des checkbox
+const checkboxLabels = document.querySelectorAll('.checkbox-label');
+
+
+checkboxLabels.forEach(label => {
+  label.addEventListener('click', function (event) {
+    event.preventDefault(); 
+    event.stopPropagation(); 
+  });
+});
+
 
 
 
@@ -280,16 +330,6 @@ function updateButtonState() {
   toggleMusicButton.textContent = musiqueJoue ? 'Arrêter' : 'Jouer';
 }
 
-// Prend la référence de la case à cocher du wireframe 
-const wireframeCheckbox = document.getElementById('wireframeCheckbox');
-
-// Ajout d'un event listener pour la case à cocher
-wireframeCheckbox.addEventListener('change', () => {
-  // Si la case à cocher est cochée on le met à true, sinon on le met à false
-  const wireframeMode = wireframeCheckbox.checked;
-  setWireframeMode(wireframeMode);
-});
-
 // Fonction permettant d'activer le wireframe
 function setWireframeMode(enabled) {
   // Analyse les objets 3D présents dans la scène et active leurs wireframes
@@ -381,7 +421,6 @@ function animateParticles() {
   // Met à jour la position des particules avec le buffer geometry
   particuleGeometry.attributes.position.needsUpdate = true;
 }
-
 
 // Commence le rendu de l'objet 3D
 animate();

@@ -1,67 +1,87 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <title>𐌐𐌔𐌙𐌂𐋅𐌄𐌃𐌄𐌋𐌉𐌀</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://kit.fontawesome.com/9032662e35.js" crossorigin="anonymous"></script>
-  </head>
-  <body>
-     <!-- Page de loader -->
-     <div id="loaderPage">
-      <div id="loader"></div>
-      <p id="messageLoader">CHARGEMENT...</p>
+
+<head>
+  <meta charset="utf-8" />
+  <title>𐌐𐌔𐌙𐌂𐋅𐌄𐌃𐌄𐌋𐌉𐌀</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://kit.fontawesome.com/9032662e35.js" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap" rel="stylesheet">
+
+
+</head>
+
+<body>
+  <!-- Page de loader -->
+  <div id="loaderPage">
+    <div id="loader"></div>
+    <p id="messageLoader">CHARGEMENT...</p>
+  </div>
+
+  <header>
+    <button id="montrerControles"></button>
+    <h3 class="titre">𐌐𐌔𐌙𐌂𐋅𐌄𐌃𐌄𐌋𐌉𐌀</h3>
+    <div id="controlesPopup" class="popup">
+      <span id="fermer" onclick="fermerPopup()">&times;</span>
+      <h2>CONTRÔLES</h2>
+
+      <div class="slider-container">
+        <label for="rotationSlider">Zoom:</label>
+        <input type="range" id="zoomSlider" min="-200" max="200" step="0.1" value="0">
+        <label for="rotationSlider">Rotation:</label>
+        <input type="range" id="rotationSlider" min="-180" max="180" step="1" value="0">
+        <label for="rotationSlider">Luminosité:</label>
+        <input type="range" id="brightnessSlider" min="0" max="10" step="0.1" value="5">
+      </div>
+
+      <label for="bgColorPicker">Couleur d'arrière plan:</label>
+      <input type="color" id="bgColorPicker" value="#ffffff">
+
+      <div class="checkbox-container">
+        <input type="checkbox" id="wireframeCheckbox">
+        <span class="checkmark"></span>
+        <label for="wireframeCheckbox" class="checkbox-label">Wireframe</label>
+      </div> 
+      
+      <div class="checkbox-container">
+        <input type="checkbox" id="activerAnim">
+        <span class="checkmark"></span>
+        <label for="activerAnim" class="checkbox-label">Animation</label>
+      </div>
+      
+      <label for="toggleMusic">Musique:</label>
+      <button id="toggleMusic">Jouer la musique</button>
+      <audio id="backgroundMusic" loop autoplay>
+        <source src="comealong.mp3" type="audio/mpeg">
+        Votre navigateur ne supporte pas la source audio
+      </audio>
+
     </div>
 
-    <header>
-      <button id="montrerControles"></button>
-      <h3 class="titre">𐌐𐌔𐌙𐌂𐋅𐌄𐌃𐌄𐌋𐌉𐌀</h3>
-      <div id="controlesPopup" class="popup">
-        <span id="fermer" onclick="fermerPopup()">&times;</span>
-        <h2>CONTRÔLES</h2>
-       
-          <label for="rotationSlider">Zoom:</label>
-          <input type="range" id="zoomSlider" min="-200" max="200" step="0.1" value="0">
-          <label for="rotationSlider">Rotation:</label>
-          <input type="range" id="rotationSlider" min="-180" max="180" step="1" value="0">
-          <label for="rotationSlider">Luminosité:</label>
-          <input type="range" id="brightnessSlider" min="0" max="10" step="0.1" value="5">
-          <label for="bgColorPicker">Couleur d'arrière plan:</label>
-          <input type="color" id="bgColorPicker" value="#ffffff">
-          <label for="wireframeCheckbox">Wireframe:</label>
-          <input type="checkbox" id="wireframeCheckbox">
-          <label for="activerAnim">Animation:</label>
-          <input type="checkbox" id="activerAnim" >
-          <label for="toggleMusic">Musique:</label>
-          <button id="toggleMusic">Jouer la musique</button>
-          <audio id="backgroundMusic" loop autoplay>
-            <source src="comealong.mp3" type="audio/mpeg">
-            Votre navigateur ne supporte pas la source audio
-          </audio>
-        
-      </div>
-      
-    </header>
+  </header>
 
-    <main>
-      
-      <div id="container3D"></div>
-      
-     
-    </main>
+  <main>
 
-    <footer>
-      <p>Kajanthan Seevarathinam © 2024</p>
-      <div class="reseauxSociaux">
-        <a href="https://www.artstation.com/kaiijuu" target="_blank"><i class="fab fa-artstation"></i></a>
-        <a href="https://github.com/KajanthanS" target="_blank"><i class="fab fa-github"></i></a>
-        <a href="https://www.linkedin.com/in/kajanthan-seevarathinam-551a3a249/" target="_blank"><i class="fab fa-linkedin"></i></a>
-      </div>
-    </footer>
+    <div id="container3D"></div>
 
-    <script type="module" src="main.js"></script>
-    
 
-  </body>
- 
+  </main>
+
+  <footer>
+    <p>Kajanthan Seevarathinam © 2024</p>
+    <div class="reseauxSociaux">
+      <a href="https://www.artstation.com/kaiijuu" target="_blank"><i class="fab fa-artstation"></i></a>
+      <a href="https://github.com/KajanthanS" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://www.linkedin.com/in/kajanthan-seevarathinam-551a3a249/" target="_blank"><i
+          class="fab fa-linkedin"></i></a>
+    </div>
+  </footer>
+
+  <script type="module" src="main.js"></script>
+
+
+</body>
+
 </html>
